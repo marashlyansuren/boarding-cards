@@ -8,18 +8,25 @@ This README would normally document whatever steps are necessary to get your app
     ````
     git clone https://surenDev@bitbucket.org/surenphp/propertyfinder.git
     ````
-    
+* Composer install for phpunit and roting lib
+    ````
+    cd propertyfinder
+    composer install
+    ````
 * Go into project folder and run docker commands
     this is php7-apache container
     ````
-    cd propertyfinder
     docker-compose build
     docker-compose up
     ````
-* Composer install for phpunit and roting lib
+    try the url 
     ````
-    composer install
+    http://localhost:8081/
     ````
+   you should see
+   ````
+   Your Property Finder Test is working
+   ````
 * How to run tests
     ````
     ./vendor/bin/phpunit
@@ -30,7 +37,13 @@ This README would normally document whatever steps are necessary to get your app
     https://www.getpostman.com/collections/4d5d660e717ea9b07076
     ````
     In that case when you want to use other type of client
-    use the  post request body:
+    use the  POST request:
+    
+    Endpoint: 
+    ````
+    http://localhost:8081/boarding-cards
+    ````
+    Request body:
     
     ````
     [
@@ -57,9 +70,10 @@ This README would normally document whatever steps are necessary to get your app
 
 ### Some Descriptions ###
 
-* Writing tests
-* Code review
-* Other guidelines
+1. I do not write strong controller, wich will validate the input and develop response
+2. I do not write so much comments on functions and think that the best comment it is the function by itself ( book: Clean Code )
+3. There was no time to write much more unit test but ii is one of my strong side.
+4. There was one endpoint and I could not show my strong knowledge from RESTFull API area
 
 ### Who do I talk to? ###
 

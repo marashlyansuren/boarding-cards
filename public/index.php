@@ -16,6 +16,10 @@ $klein->respond('POST', '/boarding-cards', function (\Klein\Request $request) {
     }
 });
 
+$klein->respond('GET', '/', function (\Klein\Request $request) {
+    echo "<h3>Your Property Finder Test is working</h3>";
+});
+
 function success($data)
 {
     printResult([
