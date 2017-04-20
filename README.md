@@ -8,7 +8,7 @@ This README would normally document whatever steps are necessary to get your app
     ````
     git clone https://surenDev@bitbucket.org/surenphp/propertyfinder.git
     ````
-* Composer install for phpunit and roting lib
+* Composer install for phpunit and routing lib
     ````
     cd propertyfinder
     composer install
@@ -70,7 +70,8 @@ This README would normally document whatever steps are necessary to get your app
 
 ### Some Descriptions ###
 
-1. I do not write strong controller, wich will validate the input and develop response
+1. I do not write strong controller, which will validate the input and develop response,
+    there was no time, I do it vary simple
 2. I do not write so much comments on functions and think that the best comment it is the function by itself ( book: Clean Code )
 3. There was no time to write much more unit test but ii is one of my strong side.
 4. There was one endpoint and I could not show my strong knowledge from RESTFull API area
