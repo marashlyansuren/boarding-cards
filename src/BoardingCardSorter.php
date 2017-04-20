@@ -1,0 +1,120 @@
+<?php
+namespace Application;
+
+
+use Application\Exception\BoardingCardEntityHasNoNextItem;
+
+class BoardingCardSorter
+{
+    /**
+     * @var BoardingCardEntityCollection
+     */
+    protected $boardingCardEntityCollection;
+
+    /**
+     * @var BoardingCardEntityCollection
+     */
+    protected $orderedBoardingCardEntityCollection;
+
+    /**
+     * @var null
+     */
+    protected $firstBoardingCard = null;
+
+    public function __construct(BoardingCardEntityCollection $boardingCardEntityCollection)
+    {
+        $this->boardingCardEntityCollection = $boardingCardEntityCollection;
+        $this->orderedBoardingCardEntityCollection = new BoardingCardEntityCollection();
+    }
+
+    /**
+     * @return BoardingCardEntityCollection
+     */
+    public function getOrderedBoardingCardEntityCollection()
+    {
+        return $this->orderedBoardingCardEntityCollection;
+    }
+
+    /**
+     * @return BoardingCardEntityCollection
+     */
+    public function process()
+    {
+        if ($this->boardingCardEntityCollection->count() == 1) {
+            $this->orderedBoardingCardEntityCollection->initFrom($this->boardingCardEntityCollection);
+            return $this->orderedBoardingCardEntityCollection;
+        }
+
+        $this->firstBoardingCard = $this->getFirst();
+        $this->orderedBoardingCardEntityCollection->addItem($this->firstBoardingCard);
+
+        $current = $this->firstBoardingCard;
+        while ($this->orderedBoardingCardEntityCollection->count() != $this->boardingCardEntityCollection->count()) {
+            try {
+                $current = $this->findNext($current);
+            } catch (BoardingCardEntityHasNoNextItem $e) {
+                break;
+            }
+
+            $this->orderedBoardingCardEntityCollection->addItem($current);
+        }
+
+        return $this->orderedBoardingCardEntityCollection;
+    }
+
+    /**
+     * @param BoardingCardEntity $boardingCardEntity
+     * @return BoardingCardEntity
+     * @throws BoardingCardEntityHasNoNextItem
+     */
+    protected function findNext(BoardingCardEntity $boardingCardEntity)
+    {
+        $boardingCardEntities = $this->boardingCardEntityCollection->getItems();
+        foreach ($boardingCardEntities as $currentBoardingCardEntity) {
+            if ($currentBoardingCardEntity->isTheSame($boardingCardEntity)) {
+                continue;
+            }
+
+            if ($currentBoardingCardEntity->getFrom() == $boardingCardEntity->getTo()) {
+                return $currentBoardingCardEntity;
+            }
+        }
+
+        throw new BoardingCardEntityHasNoNextItem();
+    }
+
+    /**
+     * @return BoardingCardEntity
+     */
+    protected function getFirst()
+    {
+        $boardingCardEntities = $this->boardingCardEntityCollection->getItems();
+        foreach ($boardingCardEntities as $boardingCardEntity) {
+            if (!$this->hasPrev($boardingCardEntity)) {
+                return $boardingCardEntity;
+            }
+        }
+
+        throw new \RuntimeException("Cannot find first Boarding Card: something is wrong");
+    }
+
+    /**
+     * @param BoardingCardEntity $boardingCardEntity
+     * @return bool
+     */
+    protected function hasPrev(BoardingCardEntity $boardingCardEntity)
+    {
+        $boardingCardEntities = $this->boardingCardEntityCollection->getItems();
+        foreach ($boardingCardEntities as $currentBoardingCardEntity) {
+            if ($currentBoardingCardEntity->isTheSame($boardingCardEntity)) {
+                continue;
+            }
+
+            if ($currentBoardingCardEntity->getTo() == $boardingCardEntity->getFrom()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}

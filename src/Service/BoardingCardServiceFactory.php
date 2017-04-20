@@ -1,0 +1,13 @@
+<?php
+namespace Application\Service;
+
+class BoardingCardServiceFactory
+{
+    /**
+     * @return BoardingCardService
+     */
+    public static function createBoardingCardService() : BoardingCardService
+    {
+        return new BoardingCardService();
+    }
+}
